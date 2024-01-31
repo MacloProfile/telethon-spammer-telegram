@@ -1,6 +1,10 @@
+import random
+
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
 import os
+
+from restore_message import restore_message
 
 
 def clear_console():
@@ -30,7 +34,7 @@ clear_console()
 change_title()
 
 
-class color : 
+class color :
     Red = '\033[91m'
     Green = '\033[92m'
     Blue = '\033[94m'
@@ -73,7 +77,7 @@ def get_users(path):
 
 def get_message(path):
     try:
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding='utf-8') as file:
             text = file.read()
             return text
     except FileNotFoundError:
@@ -81,7 +85,6 @@ def get_message(path):
 
 
 async def main():
-
     if not await client.is_user_authorized():
         await client.send_code_request(PHONE)
         try:
@@ -92,7 +95,9 @@ async def main():
     users_list = get_users("USERS.txt")
     for mess in users_list:
         message = get_message("MESSAGES.txt")
-        await client.send_message(mess, message)
+        # restore_message(message)
+        print(message)
+        # await client.send_message(mess, message)
 
 with client:
     client.loop.run_until_complete(main())
