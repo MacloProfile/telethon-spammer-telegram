@@ -96,6 +96,7 @@ async def main():
     for mess in users_list:
         message = get_message("MESSAGES.txt")
         # restore_message(message)
+        message = restore_message(message)
         print(message)
         # await client.send_message(mess, message)
 
