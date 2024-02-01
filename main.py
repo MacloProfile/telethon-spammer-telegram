@@ -1,8 +1,8 @@
-import random
-
 from telethon import TelegramClient
-from telethon.errors import SessionPasswordNeededError
+from telethon.errors import SessionPasswordNeededError, PeerFloodError
 import os
+
+import asyncio
 
 from restore_message import restore_message
 
@@ -95,10 +95,12 @@ async def main():
     users_list = get_users("USERS.txt")
     for mess in users_list:
         message = get_message("MESSAGES.txt")
-        # restore_message(message)
-        message = restore_message(message)
-        print(message)
-        # await client.send_message(mess, message)
+        try:
+            await client.send_message(mess, restore_message(message))
+            await asyncio.sleep(60)
+        except PeerFloodError:
+            print("Ошибка PeerFloodError: Слишком много запросов. Подождите некоторое время.")
+            await asyncio.sleep(360)
 
 with client:
     client.loop.run_until_complete(main())
