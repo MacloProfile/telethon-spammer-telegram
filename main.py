@@ -97,10 +97,12 @@ async def main():
         message = get_message("MESSAGES.txt")
         try:
             await client.send_message(mess, restore_message(message))
-            await asyncio.sleep(60)
+            print("Сообщение доставлено пользователю " + mess)
+            await asyncio.sleep(100)
         except PeerFloodError:
             print("Ошибка PeerFloodError: Слишком много запросов. Подождите некоторое время.")
-            await asyncio.sleep(360)
+            await asyncio.sleep(5000)
+    print("Всё отправленно!")
 
 with client:
     client.loop.run_until_complete(main())
